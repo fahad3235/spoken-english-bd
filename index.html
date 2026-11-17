@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spoken English BD — Speak Everyday English</title>
+<meta name="description" content="Offline bilingual Bangladesh spoken-English practice app: 60 everyday phrases, listen-and-repeat drills, microphone check, quiz and daily streak.">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app">
+  <header class="app-header">
+    <div class="brand">
+      <h1 data-i18n="appTitle">Spoken English BD</h1>
+      <p class="tagline" data-i18n="appTagline">Speak everyday English with confidence — listen, repeat, practise daily.</p>
+    </div>
+    <button id="langToggle" class="lang-btn" type="button">বাংলা</button>
+  </header>
+
+  <section class="dashboard" aria-label="Dashboard">
+    <div class="stat">
+      <span class="stat-label" data-i18n="statPhrases">Phrases</span>
+      <span class="stat-value" id="statPhrases">60</span>
+    </div>
+    <div class="stat">
+      <span class="stat-label" data-i18n="statToday">Practised today</span>
+      <span class="stat-value" id="statToday">0/5</span>
+    </div>
+    <div class="stat">
+      <span class="stat-label" data-i18n="statStreak">Day streak</span>
+      <span class="stat-value" id="statStreak">0</span>
+    </div>
+    <div class="stat">
+      <span class="stat-label" data-i18n="statBestQuiz">Best quiz score</span>
+      <span class="stat-value" id="statBestQuiz">—</span>
+    </div>
+    <div class="goal">
+      <div class="goal-bar"><div class="goal-fill" id="goalBar" style="width:0%"></div></div>
+      <span class="goal-text" id="goalText">Daily goal: 5 phrases</span>
+    </div>
+  </section>
+
+  <nav class="tabs" aria-label="Sections">
+    <button class="tab-btn active" type="button" data-tab="learn" data-i18n="tabLearn">Learn</button>
+    <button class="tab-btn" type="button" data-tab="practice" data-i18n="tabPractice">Practice</button>
+    <button class="tab-btn" type="button" data-tab="quiz" data-i18n="tabQuiz">Quiz</button>
+    <button class="tab-btn" type="button" data-tab="data" data-i18n="tabData">Progress &amp; Data</button>
+  </nav>
+
+  <main>
+    <section class="tab-panel active" id="tab-learn">
+      <div class="toolbar">
+        <input id="searchInput" type="search" data-i18n-ph="searchPlaceholder" placeholder="Search phrases (English or Bangla)…" aria-label="Search phrases">
+        <select id="topicFilter" aria-label="Filter by topic"></select>
+      </div>
+      <div id="phraseList" class="phrase-list"></div>
+
+      <div class="card add-card">
+        <h2 data-i18n="addPhraseTitle">Add your own phrase</h2>
+        <label class="field-label" for="addEn" data-i18n="addEnLabel">English phrase</label>
+        <input id="addEn" type="text" maxlength="200" data-i18n-ph="addEnPlaceholder" placeholder="e.g. Where is the bus stop?">
+        <label class="field-label" for="addBn" data-i18n="addBnLabel">Bangla meaning</label>
+        <input id="addBn" type="text" maxlength="200" data-i18n-ph="addBnPlaceholder" placeholder="e.g. বাস স্টপ কোথায়?">
+        <label class="field-label" for="addSay" data-i18n="addSayLabel">Pronunciation hint (optional)</label>
+        <input id="addSay" type="text" maxlength="200" data-i18n-ph="addSayPlaceholder" placeholder="e.g. হোয়্যার ইজ দ্য বাস স্টপ?">
+        <div class="btn-row">
+          <button id="addPhraseBtn" class="btn btn-primary" type="button" data-i18n="addBtn">Add phrase</button>
+        </div>
+        <p class="msg" id="addMsg" role="status"></p>
+      </div>
+    </section>
+
+    <section class="tab-panel" id="tab-practice">
+      <div class="card">
+        <h2 data-i18n="practiceTitle">Shadowing drill</h2>
+        <p id="practiceIntro"></p>
+        <p class="note" id="micNote"></p>
+        <div class="toolbar">
+          <label class="field-label inline" for="drillTopic" data-i18n="practiceTopicLabel">Topic</label>
+          <select id="drillTopic" aria-label="Drill topic"></select>
+          <button id="startDrillBtn" class="btn btn-primary" type="button" data-i18n="startPractice">Start practice</button>
+        </div>
+        <div id="drillArea"></div>
+      </div>
+    </section>
+
+    <section class="tab-panel" id="tab-quiz">
+      <div class="card">
+        <h2 data-i18n="quizTitle">Bangla → English quiz</h2>
+        <p id="quizIntro"></p>
+        <p class="note" id="quizBest"></p>
+        <div class="btn-row">
+          <button id="startQuizBtn" class="btn btn-primary" type="button" data-i18n="quizStart">Start quiz</button>
+        </div>
+        <div id="quizArea"></div>
+      </div>
+    </section>
+
+    <section class="tab-panel" id="tab-data">
+      <div class="card">
+        <h2 data-i18n="dataTitle">Your progress</h2>
+        <dl class="data-list">
+          <div><dt data-i18n="dataTotalPractised">Total phrases practised</dt><dd id="dataTotal">0</dd></div>
+          <div><dt data-i18n="dataTotalGotIt">Said well</dt><dd id="dataGotIt">0</dd></div>
+          <div><dt data-i18n="dataStreak">Current streak (days)</dt><dd id="dataStreak">0</dd></div>
+          <div><dt data-i18n="dataBestQuiz">Best quiz score</dt><dd id="dataBest">—</dd></div>
+          <div><dt data-i18n="statPhrases">Phrases</dt><dd id="dataCustomCount">0</dd></div>
+        </dl>
+      </div>
+      <div class="card">
+        <h2 data-i18n="dataExport">Export my phrases</h2>
+        <div class="btn-row">
+          <button id="exportBtn" class="btn" type="button" data-i18n="dataExport">Export my phrases</button>
+        </div>
+        <h2 data-i18n="dataImport">Import phrases</h2>
+        <div class="btn-row">
+          <label class="btn" for="importFile" data-i18n="dataImportBtn">Import JSON</label>
+          <input id="importFile" type="file" accept="application/json,.json" class="visually-hidden">
+        </div>
+        <p class="msg" id="importMsg" role="status"></p>
+      </div>
+      <div class="card danger-card">
+        <h2 data-i18n="dataErase">Erase all my data</h2>
+        <p class="note" data-i18n="dataEraseHint">Type DELETE to erase your phrases, sessions and quiz scores. The built-in 60 phrases stay.</p>
+        <input id="eraseInput" type="text" data-i18n-ph="dataErasePlaceholder" placeholder="Type DELETE">
+        <div class="btn-row">
+          <button id="eraseBtn" class="btn btn-danger" type="button" data-i18n="dataEraseBtn">Erase my data</button>
+        </div>
+        <p class="msg" id="eraseMsg" role="status"></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <p data-i18n="footerNote">Offline practice tool. Pronunciation hints are approximate — listen to the audio and repeat. Speech recognition depends on your browser and may need internet; the rest works fully offline. Not a substitute for a teacher or exam preparation.</p>
+    <p data-i18n="footerEmergency">Emergency: call 999</p>
+  </footer>
+</div>
+<script src="js/data.js"></script>
+<script src="js/core.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
